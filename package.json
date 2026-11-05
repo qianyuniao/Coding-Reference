@@ -1,0 +1,49 @@
+{
+  "name": "coding-reference",
+  "version": "1.0.0",
+  "description": "Coding Reference —— 为中文开发者整理的编程速查手册。",
+  "author": "qianyuniao",
+  "license": "MIT",
+  "homepage": "https://github.com/qianyuniao/Coding-Reference",
+  "private": false,
+  "scripts": {
+    "prepare": "husky",
+    "postinstall": "npm run cpy",
+    "build": "node restore-logo.js && refs-cli && npm run cpy && node fix-title.js && node ui-enhance.js",
+    "start": "npm run cpy && refs-cli --watch",
+    "serve": "node server.js",
+    "cpy": "cpy 'appicon/*.png' dist/appicon",
+    "prettier": "prettier --write '**/*.{mjs,css,json,prettierrc,lintstagedrc}'",
+    "markdownlint": "npx markdownlint-cli --fix ./docs/*.md"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qianyuniao/Coding-Reference.git"
+  },
+  "bugs": {
+    "url": "https://github.com/qianyuniao/Coding-Reference/issues"
+  },
+  "keywords": [
+    "reference",
+    "cheatsheet",
+    "coding",
+    "速查手册"
+  ],
+  "lint-staged": {
+    "**/*.{mjs,css,json,prettierrc,lintstagedrc}": "prettier --write",
+    "*.md": "markdownlint --fix",
+    "docs/*.md": "markdownlint --fix"
+  },
+  "devDependencies": {
+    "cpy-cli": "^5.0.0",
+    "husky": "^9.0.0",
+    "lint-staged": "^15.0.0",
+    "markdownlint": "^0.33.0",
+    "markdownlint-cli": "^0.39.0",
+    "prettier": "^3.0.0",
+    "refs-cli": "^1.11.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- 方案C：徽章括号 -->
+  <!-- 深色圆角底 -->
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="#0f172a"/>
+  <!-- 双色 </> -->
+  <path d="M26 24 L17 32 L26 40" fill="none" stroke="#5eead4" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M38 24 L47 32 L38 40" fill="none" stroke="#60a5fa" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="36" y1="20" x2="28" y2="44" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+  <!-- 底部速查点 -->
+  <circle cx="24" cy="49" r="2.2" fill="#5eead4"/>
+  <circle cx="32" cy="49" r="2.2" fill="#ffffff" opacity="0.6"/>
+  <circle cx="40" cy="49" r="2.2" fill="#60a5fa"/>
+</svg>
