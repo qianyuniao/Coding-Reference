@@ -1,0 +1,65 @@
+name: Build & Deploy to GitHub Pages
+
+# push 到 main 自动构建并发布 dist 到 GitHub Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # 支持手动触发
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同一时间只保留一次部署，避免并发冲突
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # 仓库沿袭上游惯例忽略 package-lock.json（无锁文件），故用 npm install
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      # npm run build = restore-logo → refs-cli → cpy → fix-title → ui-enhance
+      # 构建出 dist/（含定制 logo、修正标题、星系氛围增强层）
+      - name: Build site
+        run: npm run build
+
+      # 校验构建产物完整性（首页存在 + 文档页数量）
+      - name: Verify build output
+        run: |
+          test -f dist/index.html || { echo "::error::dist/index.html 缺失"; exit 1; }
+          DOCS=$(ls dist/docs/*.html | wc -l)
+          echo "docs pages: $DOCS"
+          test "$DOCS" -ge 210 || { echo "::error::文档页数量异常: $DOCS"; exit 1; }
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
